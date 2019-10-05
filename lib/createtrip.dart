@@ -56,8 +56,6 @@ class SearchDestination extends StatefulWidget {
 
 class _SearchDestinationState extends State<SearchDestination> {
 
-  final _formKey = GlobalKey<FormState>();
-
   static String destination;
   TextEditingController txt;
 

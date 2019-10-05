@@ -1,38 +1,20 @@
 import 'package:flutter/material.dart';
 //TODO notification toast, vibration import
+import 'classes.dart';
+import 'attractionPage.dart';
+import 'utility.dart';
 
-class Attraction {
-  String name;
-  String category;
-  String bestSeason;
-  double rating;
-  String description;
-  double averageCost;
-  String startTime;
-  String endTime;
-  double latitude;
-  double longitude;
-  String imgUrl;
-  int userRatingsTotal;
-
-  Attraction(
-      {this.name,
-      this.bestSeason,
-      this.category,
-      this.rating,
-      this.description,
-      this.startTime,
-      this.averageCost,
-      this.endTime,
-      this.longitude,
-      this.latitude,
-      this.imgUrl});
-}
-
-class AttractionCard extends StatelessWidget {
+class AttractionCard extends StatefulWidget {
   final Attraction obj;
 
   AttractionCard({this.obj});
+
+  @override
+  _AttractionCardState createState() => _AttractionCardState();
+}
+
+class _AttractionCardState extends State<AttractionCard> {
+  bool selected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +24,7 @@ class AttractionCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           //TODO link to attraction page and add hero animation
+          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AttractionPage(widget.obj)));
           print("launch attraction page");
         },
         child: Container(
@@ -61,9 +44,9 @@ class AttractionCard extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: Hero(
-                          tag: obj.name,
+                          tag: widget.obj.name,
                           child: Image.network(
-                            obj.imgUrl,
+                            widget.obj.imgUrl,
                             fit: BoxFit.cover,
                             height: 175.0,
                             width: 175.0,
@@ -81,22 +64,31 @@ class AttractionCard extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        //TODO make this button statefull and indicate selected locations
                         top: 10.0,
                         right: 10.0,
                         child: SizedBox(
                           width: 30.0,
                           height: 30.0,
                           child: RawMaterialButton(
-                            onPressed: () {},
-                            child: new Icon(
-                              Icons.add,
-                              color: Colors.white,
-                              size: 20.0,
-                            ),
-                            shape: new CircleBorder(),
-                            elevation: 1.0,
-                            fillColor: Colors.transparent,
+                            onPressed: () {
+                              setState(() {
+                                selected = !selected;
+                              });
+                            },
+                            child: selected
+                                ? Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                    size: 20.0,
+                                  )
+                                : Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                    size: 20.0,
+                                  ),
+                            shape: new CircleBorder(side: BorderSide(color: Colors.white)),
+                            elevation: 0.0,
+                            fillColor: selected ? Colors.transparent : Colors.green[400],
                             padding: const EdgeInsets.all(0.0),
                           ),
                         ),
@@ -108,7 +100,7 @@ class AttractionCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 5.0, bottom: 5.0),
                 child: Text(
-                  obj.name,
+                  widget.obj.name,
                   style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
                 ),
               ),
@@ -123,14 +115,14 @@ class AttractionCard extends StatelessWidget {
                           ),
                           side: BorderSide(color: Colors.white70)),
                     ),
-                    child: StarDisplay(value: obj.rating.round())),
+                    child: StarDisplay(value: widget.obj.rating.round())),
               ),
               Expanded(
                 flex: 1,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 5.0, bottom: 5.0),
                   child: Text(
-                    obj.averageCost.toString() + " \$ per person",
+                    widget.obj.averageCost.toString() + " \$ per person",
                     style: TextStyle(fontSize: 12.0),
                   ),
                 ),
@@ -138,46 +130,6 @@ class AttractionCard extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class AttractionPage extends StatelessWidget {
-  final Attraction obj;
-
-  AttractionPage({this.obj});
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-      child: Hero(
-        tag: obj.name,
-        child: Image.network(obj.imgUrl),
-      ),
-    );
-  }
-}
-
-class StarDisplay extends StatelessWidget {
-  final int value;
-
-  const StarDisplay({Key key, this.value = 0})
-      : assert(value != null),
-        super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: List.generate(5, (index) {
-          return Icon(
-            index < value ? Icons.star : Icons.star_border,
-            size: 12.0,
-          );
-        }),
       ),
     );
   }

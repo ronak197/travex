@@ -25,6 +25,8 @@ dependencies:
   cupertino_icons: ^0.1.2
   flutter_svg:
   http:
+  carousel_slider:
+  spinkit:
 
 dev_dependencies:
   flutter_test:
