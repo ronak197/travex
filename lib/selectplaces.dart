@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:travex/animations.dart';
+import 'package:travex/attractionCard.dart' as prefix0;
 import 'package:travex/attractions.dart';
 import 'package:travex/placesresult.dart';
+import 'package:travex/animations.dart';
+import 'package:travex/attractionCard.dart';
 
 class SelectPlaces extends StatefulWidget {
   @override
@@ -19,21 +23,25 @@ class _SelectPlacesState extends State<SelectPlaces> {
 
   List<Result> placesResults = new List();
   List<Attraction> attractions = new List();
+  List<String> imgUrls = new List();
+  static bool errorHasOccurred = false;
 
   Future<void> getPlacesList(List<Result> results) async {
     print('check');
     results.forEach((f) {
-      Attraction attraction = new Attraction();
-      attraction.name = f.name.toString();
-      attraction.latitude = f.geometry.location.lat;
-      attraction.longitude = f.geometry.location.lng;
-      attraction.rating = f.rating;
-      attraction.userRatingsTotal = f.userRatingsTotal;
-      attraction.imgUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${f.photos[0].photoReference}&key=$apikey';
-      attractions.add(attraction);
+      attractions.add(Attraction(
+        name : f.name.toString(),
+        latitude : f.geometry.location.lat,
+        longitude : f.geometry.location.lng,
+        rating : f.rating,
+        userRatingsTotal : f.userRatingsTotal,
+        thumbnail: 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${f.photos[0].photoReference}&key=$apikey',
+      ));
     });
     print(attractions);
-    setState(() {
+    Future.delayed(const Duration(milliseconds: 2500), () {
+      setState(() {
+      });
     });
   }
 
@@ -42,12 +50,16 @@ class _SelectPlacesState extends State<SelectPlaces> {
     String url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=${widget.description.split(' ').elementAt(0).toString()}+point+of+interest&language=en&key=$apikey';
     print(url);
     final response = await http.get('$url');
-    print(response.body);
-    placesResults = placesResultFromJson(response.body).results;
-    await getPlacesList(placesResults);
-//    setState(() {
-//
-//    });
+    print(response.statusCode.toString());
+    if(response.statusCode.toInt() != 200){
+      setState(() {
+        errorHasOccurred = true;
+      });
+    }
+    else{
+      placesResults = placesResultFromJson(response.body).results;
+      await getPlacesList(placesResults);
+    }
   }
 
   @override
@@ -59,39 +71,59 @@ class _SelectPlacesState extends State<SelectPlaces> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: Icon(Icons.keyboard_backspace, color: Colors.black),
+            onPressed: (){
+              Navigator.pop(context);
+            },
+          ),
+      ),
+      backgroundColor: Colors.white,
       body: SafeArea(
-        child:
-//        Column(
-//          children: <Widget>[
-//            Container(
-//              padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
-//              child: Column(
-//                crossAxisAlignment: CrossAxisAlignment.start,
-//                mainAxisSize: MainAxisSize.min,
-//                children: <Widget>[
-//                  Text('${widget.description.trim()}', style: Theme.of(context).textTheme.title, textAlign: TextAlign.left,),
-//                  Text('Select the place you wish to visit', style: Theme.of(context).textTheme.body1, textAlign: TextAlign.left,),
-//                ],
-//              ),
-//            ),
-//,
-//          ],
-//        ),
-          attractions.length != 0 ?
-          ListView.builder(
-              itemCount: attractions.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Row(
-                  children: <Widget>[
-                    AttractionCard(
+        child: ListView(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(left: 20.0, right: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text('${widget.description.trim()}', style: Theme.of(context).textTheme.title, textAlign: TextAlign.left,),
+                  Text('Select the place you wish to visit', style: Theme.of(context).textTheme.body1, textAlign: TextAlign.left,),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 20.0),
+              child: attractions.length != 0 && errorHasOccurred == false ?
+              GridView.builder(
+                shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,mainAxisSpacing: 15.0),
+                  itemCount: attractions.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return AttractionCard(
                       obj: attractions[index],
-                    ),AttractionCard(
-                      obj: attractions[index+1],
-                    ),
-                  ],
-                );
-              }) :
-          SizedBox(height: 0.0,width: 0.0)
+                    );
+                  }) :
+                  errorHasOccurred == false ? Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(top: 150.0),
+                    child: FadingBoxes(),
+                  ) :
+                  Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(top: 150.0),
+                    child: Text('Some Error has ocurred'),
+                  )
+              ,
+            ),
+          ],
+        ),
+
       ),
     );
   }
