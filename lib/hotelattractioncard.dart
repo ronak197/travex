@@ -4,17 +4,17 @@ import 'utility.dart';
 import 'attractions.dart';
 import 'package:travex/profile.dart';
 
-class AttractionCard extends StatefulWidget {
+class HotelAttractionCard extends StatefulWidget {
   final Attraction obj;
   bool selectedCard = false;
 
-  AttractionCard({this.obj, this.selectedCard});
+  HotelAttractionCard({this.obj, this.selectedCard});
 
   @override
-  _AttractionCardState createState() => _AttractionCardState();
+  _HotelAttractionCardState createState() => _HotelAttractionCardState();
 }
 
-class _AttractionCardState extends State<AttractionCard> {
+class _HotelAttractionCardState extends State<HotelAttractionCard> {
 
   @override
   void initState() {
@@ -80,25 +80,25 @@ class _AttractionCardState extends State<AttractionCard> {
                               onPressed: () {
                                 setState(() {
                                   if(widget.selectedCard == false){
-                                      Profile.selectedAttractions.add(widget.obj);
+                                    Profile.selectedAttractions.add(widget.obj);
                                   }
                                   else {
-                                        Profile.selectedAttractions.remove(widget.obj);
+                                    Profile.selectedAttractions.remove(widget.obj);
                                   }
                                   widget.selectedCard = !widget.selectedCard;
                                 });
                               },
                               child: !widget.selectedCard
                                   ? Icon(
-                                      Icons.favorite_border,
-                                      color: Colors.white,
-                                      size: 20.0,
-                                    )
+                                Icons.favorite_border,
+                                color: Colors.white,
+                                size: 20.0,
+                              )
                                   : Icon(
-                                      Icons.favorite,
-                                      color: Color(0xfff05042),
-                                      size: 20.0,
-                                    ),
+                                Icons.favorite,
+                                color: Color(0xfff05042),
+                                size: 20.0,
+                              ),
                               shape: new CircleBorder(side: BorderSide(width: 1.0, color: Colors.white.withOpacity(0.3))),
                               elevation: 0.0,
                               fillColor: Colors.white.withOpacity(0.3),
@@ -136,8 +136,8 @@ class _AttractionCardState extends State<AttractionCard> {
                     padding: const EdgeInsets.only(left: 5.0, bottom: 0.0),
                     child: widget.obj.priceLevel != 0 ?
                     Text( '${widget.obj.priceLevel * 100}' + "Rs per person", style: TextStyle(fontSize: 12.0)):
-                      Text('Free Entry', style: TextStyle(fontSize: 12.0)),
-                    ),
+                    Text('Free Entry', style: TextStyle(fontSize: 12.0)),
+                  ),
                 ),
               ],
             ),

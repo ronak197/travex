@@ -229,8 +229,8 @@ class _HotelAttractionPageState extends State<HotelAttractionPage> {
                       child: Container(
                         padding: EdgeInsets.all(20.0),
                         child: widget.obj.priceLevel != null ?
-                          Text('${(widget.obj.priceLevel * 100)}' + 'Rs/person', style: Theme.of(context).textTheme.body1,) :
-                          Text('Free Entry', style: Theme.of(context).textTheme.body2,),
+                        Text('${(widget.obj.priceLevel * 100)}' + 'Rs/person', style: Theme.of(context).textTheme.body1,) :
+                        Text('Free Entry', style: Theme.of(context).textTheme.body2,),
                       ),
                     ),
                     SizedBox(
@@ -244,10 +244,10 @@ class _HotelAttractionPageState extends State<HotelAttractionPage> {
                             onPressed: () {
                               setState(() {
                                 if(widget.selected == false){
-                                  Profile.selectedAttractions.add(widget.obj);
+                                  Profile.selectedHotels.add(widget.obj);
                                 }
                                 else {
-                                  Profile.selectedAttractions.remove(widget.obj);
+                                  Profile.selectedHotels.remove(widget.obj);
                                 }
                                 widget.selected = !widget.selected;
                               });
@@ -256,25 +256,25 @@ class _HotelAttractionPageState extends State<HotelAttractionPage> {
                             color: !widget.selected ? Colors.white : Color(0xfff05042),
                             child: widget.selected
                                 ? Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.check,
-                                        color: Colors.white,
-                                      ),
-                                      Text(
-                                        "Added to trip",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ],
-                                  )
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  "Added to trip",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ],
+                            )
                                 : Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Icon(Icons.add),
-                                      Text("Add to trip"),
-                                    ],
-                                  )),
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(Icons.add),
+                                Text("Add to trip"),
+                              ],
+                            )),
                       ),
                     ),
                   ],

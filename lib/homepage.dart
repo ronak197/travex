@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:travex/createtrip.dart';
+import 'package:travex/explorePage.dart';
+import 'package:travex/profilePage.dart';
+import 'package:travex/savedPage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,19 +15,10 @@ class _HomePageState extends State<HomePage> {
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   static List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Explore',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Saved',
-      style: optionStyle,
-    ),
+    ExplorePage(),
+    SavedTripPage(),
     CreateTrip(),
-    Text(
-      'Index 4: Profile',
-      style: optionStyle,
-    ),
+    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {

@@ -41,11 +41,13 @@ class Result {
   OpeningHours openingHours;
   List<Photo> photos;
   String placeId;
+  int priceLevel;
   PlusCode plusCode;
   double rating;
   String reference;
   List<String> types;
   int userRatingsTotal;
+  String vicinity;
 
   Result({
     this.formattedAddress,
@@ -56,11 +58,13 @@ class Result {
     this.openingHours,
     this.photos,
     this.placeId,
+    this.priceLevel,
     this.plusCode,
     this.rating,
     this.reference,
     this.types,
     this.userRatingsTotal,
+    this.vicinity
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
@@ -72,11 +76,13 @@ class Result {
     openingHours: json["opening_hours"] == null ? null : OpeningHours.fromJson(json["opening_hours"]),
     photos: json["photos"] == null ? null : List<Photo>.from(json["photos"].map((x) => Photo.fromJson(x))),
     placeId: json["place_id"] == null ? null : json["place_id"],
+    priceLevel: json["price_level"] == null ? null : json["price_level"],
     plusCode: json["plus_code"] == null ? null : PlusCode.fromJson(json["plus_code"]),
     rating: json["rating"] == null ? null : json["rating"].toDouble(),
     reference: json["reference"] == null ? null : json["reference"],
     types: json["types"] == null ? null : List<String>.from(json["types"].map((x) => x)),
     userRatingsTotal: json["user_ratings_total"] == null ? null : json["user_ratings_total"],
+    vicinity: json["vicinity"] == null ? null : json["vicinity"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -88,11 +94,13 @@ class Result {
     "opening_hours": openingHours == null ? null : openingHours.toJson(),
     "photos": photos == null ? null : List<dynamic>.from(photos.map((x) => x.toJson())),
     "place_id": placeId == null ? null : placeId,
+    "price_level": priceLevel == null ? null : priceLevel,
     "plus_code": plusCode == null ? null : plusCode.toJson(),
     "rating": rating == null ? null : rating,
     "reference": reference == null ? null : reference,
     "types": types == null ? null : List<dynamic>.from(types.map((x) => x)),
     "user_ratings_total": userRatingsTotal == null ? null : userRatingsTotal,
+    "vicinity": vicinity == null ? null : vicinity,
   };
 }
 
