@@ -15,7 +15,6 @@ This project is a smart tourism application, which focuses on getting users thei
   <img src="app_screenshots/Screenshot_20191006-081432.png" width="24%">
   <img src="app_screenshots/Screenshot_20191006-081457.png" width="24%">
   <img src="app_screenshots/Screenshot_20191006-081535.png" width="24%">
-  <img src="app_screenshots/Screenshot_20191006-081535.png" width="24%">
   <img src="app_screenshots/Screenshot_20191006-081544.png" width="24%">
   <img src="app_screenshots/Screenshot_20191006-081550.png" width="24%">
 </p>
