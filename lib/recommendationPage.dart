@@ -62,11 +62,10 @@ class _RecommendationPageState extends State<RecommendationPage> {
     Profile.selectedHotels.forEach((h){
       int sum = h.priceLevel*10;
       Profile.selectedAttractions.forEach((a){sum += a.priceLevel*10;});
-      if(sum == Profile.budget){
+      if(sum <= Profile.budget){
         potentialHotels.add(h);
       }
     });
-
     return potentialHotels;
   }
 
